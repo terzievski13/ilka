@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1a1008">
+<title>Финал</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%88%9E%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .stage{position:relative;z-index:2;flex:1;width:100%;display:grid;place-items:center;
+    perspective:2100px;perspective-origin:50% 40%}
+
+  .envelope{
+    width:min(540px,86vw);cursor:pointer;background:none;border:none;padding:0;
+    display:block;transition:transform .9s cubic-bezier(.22,.85,.32,1.12),filter .6s;
+    filter:drop-shadow(0 9px 18px rgba(0,0,0,.25));-webkit-tap-highlight-color:transparent}
+  .envelope svg{display:block;width:100%;height:auto;overflow:visible}
+  .envelope:focus-visible{outline:3px solid #D9A94E;outline-offset:8px;border-radius:4px}
+  .envelope.lifting{transform:translateY(-4vh) scale(1.06);filter:drop-shadow(0 36px 54px rgba(0,0,0,.4))}
+  .flap{transform-origin:180px 0;transition:transform 1s cubic-bezier(.5,1.1,.4,1)}
+  .open .flap{transform:rotateX(165deg) translateY(-1.5px)}
+  .seal,.addr{transition:opacity .3s}
+  .open .seal,.open .addr{opacity:0}
+  .seams{opacity:0;transition:opacity .3s}
+  .open .seams{opacity:1}
+
+  .tap{font-family:var(--hand);font-size:clamp(20px,4.6vw,33px);color:#fff3e6;
+    opacity:.7;margin-top:clamp(18px,4vw,34px);transition:opacity .4s;text-align:center}
+  .tap.gone{opacity:0}
+
+  .letterwrap{position:relative;width:min(930px,92vw);
+    opacity:0;transform:scale(.72);transition:opacity .5s,transform .6s cubic-bezier(.5,1.1,.4,1)}
+  .letterwrap.in{opacity:1;transform:scale(1)}
+  .paperpage{
+    position:relative;border-radius:6px;overflow:hidden;box-sizing:border-box;
+    height:min(880px,calc(100svh - clamp(150px,26vh,230px)));
+    box-shadow:0 45px 90px rgba(0,0,0,.45);
+    background:repeating-linear-gradient(0deg,transparent 0,transparent 49.5px,rgba(120,90,60,.16) 49.5px,rgba(120,90,60,.16) 51px),
+               linear-gradient(180deg,#fdf6e9 0%,#f6e9d2 100%)}
+  .crease{position:absolute;left:0;right:0;height:1.5px;opacity:.85;
+    background:linear-gradient(90deg,transparent,rgba(120,90,60,.4),transparent)}
+  .lettertext{
+    position:absolute;inset:clamp(24px,5vw,75px) clamp(20px,5.4vw,84px);
+    font-family:var(--serif);font-size:clamp(16px,3.1vw,33px);line-height:1.55;
+    color:#3a2820;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .lettertext > *{opacity:0;transform:translateY(9px);transition:opacity .5s,transform .5s}
+  .letterwrap.read .lettertext > *{opacity:1;transform:none}
+  .greet{font-family:var(--hand);font-weight:700;font-size:clamp(26px,5.4vw,45px);
+    color:#5a3f14;margin:0 0 clamp(14px,2.6vw,27px)}
+  .lettertext p{margin:0 0 clamp(14px,2.4vw,26px)}
+  .photo{display:grid;place-items:center;text-align:center;margin:clamp(20px,4vw,33px) auto;
+    width:100%;max-width:600px;aspect-ratio:600/345;border-radius:6px;
+    border:2px dashed rgba(120,90,60,.45);background:rgba(120,90,60,.05);
+    font-family:var(--mono);font-size:clamp(11px,2.4vw,16px);color:#8a6a42;
+    letter-spacing:.1em;text-transform:uppercase;padding:12px;box-sizing:border-box}
+  .photo img{width:100%;height:100%;object-fit:cover;border-radius:4px;display:block}
+  .sign{font-family:var(--hand);font-weight:600;font-size:clamp(22px,4.4vw,36px);
+    color:#5a3f14;text-align:center;margin:0}
+  .sign.names{color:#a87a2e;margin-top:3px}
+  .closebtn{position:absolute;top:clamp(-18px,-3vw,-24px);right:clamp(-10px,-2vw,-24px);
+    width:clamp(40px,8vw,54px);height:clamp(40px,8vw,54px);border-radius:50%;border:none;
+    background:#2a1a14;color:#fff3e6;font-size:clamp(22px,4.4vw,30px);line-height:1;
+    cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.4);display:grid;place-items:center;z-index:3}
+  .closebtn:focus-visible{outline:3px solid #D9A94E;outline-offset:3px}
+  .smallenv{width:min(360px,62vw);margin-top:clamp(16px,3vw,27px);
+    filter:drop-shadow(0 15px 27px rgba(0,0,0,.4))}
+  .smallenv svg{display:block;width:100%;height:auto}
+  @media (max-height:700px){.smallenv{display:none}}
+</style>
+</head>
+<body>
+<main class="screen dark" style="justify-content:flex-start">
+  <div class="progress" data-progress="5" style="border-color:rgba(244,241,234,.16)"></div>
+
+  <p class="eyebrow" style="position:relative;z-index:2;color:#e0b98a;opacity:.85;margin-top:clamp(8px,2vh,24px)">Финал</p>
+
+  <div class="stage">
+    <!-- envelope -->
+    <div id="envStage" style="display:grid;place-items:center">
+      <button class="envelope" id="env" type="button" aria-label="Отвори плика">
+        <svg viewBox="0 0 360 230" aria-hidden="true">
+          <defs>
+            <linearGradient id="eg" x1="0" y1="0" x2="0.4" y2="1">
+              <stop offset="0%" stop-color="#f7ecd4"/><stop offset="100%" stop-color="#e6d3a8"/>
+            </linearGradient>
+            <filter id="nz"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4"/>
+              <feColorMatrix values="0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0.06 0"/>
+              <feComposite in2="SourceGraphic" operator="in"/></filter>
+          </defs>
+          <rect width="360" height="230" rx="3" fill="url(#eg)" stroke="#c2a468" stroke-width="1.5"/>
+          <rect width="360" height="230" rx="3" filter="url(#nz)" opacity=".5"/>
+          <g class="seams">
+            <path d="M0 0 180 100 360 0" fill="none" stroke="#a5895a" stroke-width="1" opacity=".3"/>
+            <path d="M0 230 180 130 360 230" fill="none" stroke="#a5895a" stroke-width="1" opacity=".3"/>
+          </g>
+          <g class="addr">
+            <line x1="118" y1="144" x2="270" y2="144" stroke="#a5895a" stroke-width=".6" opacity=".4"/>
+            <line x1="118" y1="164" x2="248" y2="164" stroke="#a5895a" stroke-width=".6" opacity=".4"/>
+            <text x="118" y="142" fill="#7a5a2e" font-size="21" font-family="Caveat, cursive">За г-жо Неделева</text>
+            <text x="118" y="162" fill="#7a5a2e" font-size="15" font-family="Caveat, cursive" opacity=".75">— от Ваши ученици</text>
+            <rect x="290" y="14" width="50" height="60" fill="#eeddb4" stroke="#a5895a" stroke-width=".8" stroke-dasharray="2 2"/>
+            <circle cx="315" cy="44" r="14" fill="#D9A94E" opacity=".9"/>
+            <text x="315" y="49" text-anchor="middle" fill="#5a3f14" font-size="15" font-family="serif">∞</text>
+          </g>
+          <g class="flap">
+            <path d="M0 0 180 110 360 0Z" fill="#e6d3a8" stroke="#c2a468" stroke-width="1.5"/>
+            <g class="seal" transform="translate(180,100)">
+              <circle r="22" fill="#D9A94E"/><circle r="22" fill="#e8c37a" opacity=".5"/>
+              <circle r="18" fill="none" stroke="#a87a2e" stroke-width="1" opacity=".6"/>
+              <text text-anchor="middle" y="7" fill="#5a3f14" font-size="20" font-family="serif" font-style="italic">И</text>
+            </g>
+          </g>
+        </svg>
+      </button>
+      <p class="tap" id="tap">натисни плика</p>
+    </div>
+
+    <!-- letter -->
+    <div id="readStage" hidden style="display:grid;place-items:center;width:100%">
+      <div class="letterwrap" id="letter">
+        <div class="paperpage">
+          <div class="crease" style="top:33.33%"></div>
+          <div class="crease" style="top:66.66%"></div>
+          <div class="lettertext">
+            <p class="greet">Скъпа г-жо Неделева,</p>
+            <p>Щом сте стигнали дотук — значи сте решили всичко. Точно както винаги сте ни учили: не с бързане, а с търпение, докато парчетата не си дойдат на мястото.</p>
+            <p>Малцина от нас помнят наизуст формулите. Но помним звука на тебешира, гласа, който обясняваше отново и отново, без да се уморява, и увереността Ви, че всеки от нас може да го разбере — стига да не бърза.</p>
+            <p>Тази малка игра е скромен опит да Ви върнем нещо от годините задачи — с обичта, с която ги давахте.</p>
+            <p>Благодарим Ви. За търпението. За строгостта, която ни направи по-добри. И за всичко, което не се побира на тази страница.</p>
+            <!-- ЗАМЕНИ: сложи снимка на класа в assets/class.jpg и разкоментирай реда с <img> -->
+            <div class="photo"><!-- <img src="assets/class.jpg" alt="Снимка на класа"> -->снимка на класа тук</div>
+            <p class="sign">С обич и уважение,</p>
+            <p class="sign names">[ имената на учениците Ви ]</p>
+          </div>
+        </div>
+        <button class="closebtn" id="close" type="button" aria-label="Затвори писмото">×</button>
+      </div>
+
+      <div class="smallenv" aria-hidden="true">
+        <svg viewBox="0 0 360 230">
+          <rect width="360" height="230" rx="3" fill="#f0e2bf" stroke="#c2a468" stroke-width="1.5"/>
+          <path d="M0 0 180 100 360 0" fill="none" stroke="#a5895a" stroke-width="1" opacity=".3"/>
+          <path d="M0 230 180 130 360 230" fill="none" stroke="#a5895a" stroke-width="1" opacity=".3"/>
+          <g style="transform-origin:180px 0;transform:rotateX(165deg) translateY(-1.5px)">
+            <path d="M0 0 180 110 360 0Z" fill="#e6d3a8" stroke="#c2a468" stroke-width="1.5"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  var env = document.getElementById("env");
+  var envStage = document.getElementById("envStage");
+  var readStage = document.getElementById("readStage");
+  var letter = document.getElementById("letter");
+  var tap = document.getElementById("tap");
+  var timers = [];
+
+  function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+  function clearAll() { timers.forEach(clearTimeout); timers = []; }
+
+  env.addEventListener("click", function () {
+    if (env.classList.contains("lifting")) return;
+    tap.classList.add("gone");
+    env.classList.add("lifting");
+    later(function () { env.classList.add("open"); }, 500);
+    later(function () {
+      envStage.hidden = true;
+      readStage.hidden = false;
+      later(function () { letter.classList.add("in"); }, 40);
+      later(function () {
+        letter.classList.add("read");
+        window.ilka.store.set("ilka_final", "opened");
+      }, 620);
+    }, 1900);
+  });
+
+  document.getElementById("close").addEventListener("click", function () {
+    clearAll();
+    letter.classList.remove("in", "read");
+    readStage.hidden = true;
+    envStage.hidden = false;
+    env.classList.remove("lifting", "open");
+    tap.classList.remove("gone");
+    env.focus();
+  });
+})();
+</script>
+</body>
+</html>

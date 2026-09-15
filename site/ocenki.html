@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7efdf">
+<title>Твоят фиш с оценки</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%88%9E%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .lined{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;
+    background-image:repeating-linear-gradient(0deg,transparent 0,transparent 55.5px,rgba(90,63,20,.06) 55.5px,rgba(90,63,20,.06) 57px)}
+  .sheet{position:relative;z-index:2;width:100%;max-width:960px;
+    padding:clamp(24px,4.6vw,60px) clamp(20px,4.6vw,66px);
+    background:linear-gradient(180deg,#fffaf0,#f6ecd6);border-radius:6px;
+    box-shadow:0 45px 120px -48px rgba(90,63,20,.4),inset 0 0 0 1.5px rgba(120,90,40,.16)}
+  .grow{display:flex;align-items:center;gap:clamp(14px,3vw,33px);
+    padding:clamp(16px,2.8vw,27px) 0;border-bottom:1.5px solid rgba(120,90,40,.14)}
+  .grow .label{font-family:var(--serif);font-size:clamp(16px,3vw,28.5px);color:#4a3a22}
+  .grow .note{font-family:var(--hand);font-style:italic;font-weight:500;
+    font-size:clamp(16px,3vw,28.5px);color:#B8443A;margin-top:6px}
+  .mark{flex:none;border-radius:50%;display:grid;place-items:center;
+    font-family:var(--hand);font-weight:700;transform:rotate(-6deg);
+    width:clamp(54px,11vw,90px);height:clamp(54px,11vw,90px);
+    border:3px solid #B8443A;color:#B8443A;font-size:clamp(20px,4vw,31.5px)}
+  .total{display:flex;align-items:center;gap:clamp(14px,3vw,33px);
+    padding-top:clamp(22px,3.6vw,39px);margin-top:9px}
+  .total .cap{font-family:var(--mono);font-size:var(--fs-micro);letter-spacing:.18em;
+    text-transform:uppercase;color:#a87a2e}
+  .total .say{font-family:var(--hand);font-style:italic;font-weight:600;
+    font-size:clamp(18px,3.4vw,31.5px);color:#5a3f14;margin-top:9px}
+  .mark.big{width:clamp(70px,14vw,114px);height:clamp(70px,14vw,114px);
+    border:4px solid #D9A94E;color:#a87a2e;font-size:clamp(25px,5vw,40.5px);
+    transform:rotate(4deg);box-shadow:0 0 0 7px rgba(217,169,78,.14)}
+  .sheettitle{font-family:var(--hand);font-weight:700;font-size:clamp(34px,7.4vw,66px);
+    color:#5a3f14;line-height:1.02;margin:0}
+  .sheetsub{font-family:var(--serif);font-style:italic;font-size:clamp(15px,3vw,27px);
+    color:#7a5a2e;margin:15px auto 0;max-width:780px}
+</style>
+</head>
+<body class="paper">
+<main class="screen paperbg">
+  <div class="progress onpaper" data-progress="4"></div>
+  <div class="lined"></div>
+
+  <p class="eyebrow fade-1" style="position:relative;z-index:2;color:#B8443A;margin-bottom:clamp(12px,2.4vw,24px)">Оценяване</p>
+
+  <div class="content fade-2" style="margin-bottom:clamp(26px,5vw,54px)">
+    <h1 class="sheettitle">Твоят фиш с оценки</h1>
+    <p class="sheetsub">Знаем, че никога не давате точно 6.00. Ето как се справи този път.</p>
+  </div>
+
+  <section class="sheet fade-3" id="sheet"></section>
+
+  <a class="btn fade-4" href="final.html" style="position:relative;z-index:2;margin-top:clamp(30px,5.6vw,60px)">Последна стъпка&nbsp;&nbsp;→</a>
+</main>
+
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  var s = window.ilka.store;
+  var g1 = s.get("ilka_grade1", "5.81");
+  var g2 = s.get("ilka_grade2", "5.72");
+  var g3 = s.get("ilka_grade3", "5.90");
+  var avg = ((parseFloat(g1) + parseFloat(g2) + parseFloat(g3)) / 3).toFixed(2);
+
+  var rows = [
+    { label: "Задача 1 — тримата синове", grade: g1, note: "Обосновката е точна. Резерв винаги остава." },
+    { label: "Задача 2 — охлювът в кладенеца", grade: g2, note: "Последният ден е разбран правилно." },
+    { label: "Задача 3 — подвижният пъзел", grade: g3, note: "Изведено без засядане. Почти отличен." }
+  ];
+
+  var html = rows.map(function (r) {
+    return '<div class="grow"><div style="flex:1;min-width:0">' +
+      '<div class="label">' + r.label + '</div>' +
+      '<div class="note">' + r.note + '</div></div>' +
+      '<div class="mark">' + r.grade + '</div></div>';
+  }).join("");
+
+  html += '<div class="total"><div style="flex:1;min-width:0">' +
+    '<div class="cap">Обща оценка</div>' +
+    '<div class="say">Дори тук — ' + avg + '. Точно като Вас.</div></div>' +
+    '<div class="mark big">' + avg + '</div></div>';
+
+  document.getElementById("sheet").innerHTML = html;
+})();
+</script>
+</body>
+</html>

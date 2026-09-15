@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&amp;family=JetBrains+Mono:wght@300;400;500&amp;display=swap" rel="stylesheet">
+  <style>
+    @keyframes scDrift { 0%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-33px) rotate(7deg);} 100%{transform:translateY(0) rotate(0deg);} }
+    @keyframes scFade { from{opacity:0; transform:translateY(24px); filter:blur(3px);} to{opacity:1; transform:translateY(0); filter:blur(0);} }
+    @keyframes scRing { from{stroke-dashoffset:210;} to{stroke-dashoffset:0;} }
+    summary::-webkit-details-marker { display:none; }
+    @keyframes scAur1 { 0%{transform:translate(0,0) scale(1);} 50%{transform:translate(7%,5%) scale(1.18);} 100%{transform:translate(0,0) scale(1);} }
+    @keyframes scAur2 { 0%{transform:translate(0,0) scale(1);} 50%{transform:translate(-6%,-4%) scale(1.12);} 100%{transform:translate(0,0) scale(1);} }
+  </style>
+</helmet>
+
+<div data-screen-label="Оценяване" style="position:relative; min-height:100vh; width:100%; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:96px 36px; box-sizing:border-box; background:linear-gradient(180deg, #f6ecd6 0%, #eaddb8 100%);">
+
+  <!-- page switcher -->
+  <details style="position:fixed; top:39px; left:39px; z-index:300;">
+    <summary style="cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.14em; text-transform:uppercase; color:#B8443A; padding:13.5px 21px; border-radius:999px; background:rgba(90,63,20,.05); border:1.5px solid rgba(90,63,20,.14); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); list-style:none;">Страници</summary>
+    <div style="margin-top:12px; padding:21px 24px; border-radius:12px; background:rgba(246,236,214,.96); border:1.5px solid rgba(90,63,20,.14); backdrop-filter:blur(15px); display:flex; flex-direction:column; gap:15px; min-width:240px; box-shadow:0 30px 75px -30px rgba(90,63,20,.4);">
+      <a href="Landing.dc.html" style="font-family:'Caveat',cursive; font-size:28px; color:#5a3f14; text-decoration:none;">Начало</a>
+      <a href="Stage1.dc.html" style="font-family:'Caveat',cursive; font-size:28px; color:#5a3f14; text-decoration:none;">Задача 1</a>
+      <a href="Stage2.dc.html" style="font-family:'Caveat',cursive; font-size:28px; color:#5a3f14; text-decoration:none;">Задача 2</a>
+      <a href="Stage3.dc.html" style="font-family:'Caveat',cursive; font-size:28px; color:#5a3f14; text-decoration:none;">Задача 3</a>
+      <a href="Grades.dc.html" style="font-family:'Caveat',cursive; font-size:28px; color:#B8443A; text-decoration:none;">Фиш с оценки</a>
+      <a href="Final.dc.html" style="font-family:'Caveat',cursive; font-size:28px; color:#5a3f14; text-decoration:none;">Финал</a>
+    </div>
+  </details>
+
+  <!-- journey progress -->
+  <div style="position:fixed; top:39px; left:50%; transform:translateX(-50%); z-index:50; display:flex; align-items:center; gap:13.5px; padding:13.5px 27px; border-radius:1498.5px; background:rgba(90,63,20,.05); border:1.5px solid rgba(90,63,20,.14); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px);">
+    <div style="width:10.5px; height:10.5px; border-radius:50%; background:rgba(90,63,20,.55);"></div>
+    <div style="width:30px; height:2.25px; background:rgba(90,63,20,.18);"></div>
+    <div style="width:10.5px; height:10.5px; border-radius:50%; background:rgba(90,63,20,.55);"></div>
+    <div style="width:30px; height:2.25px; background:rgba(90,63,20,.18);"></div>
+    <div style="width:10.5px; height:10.5px; border-radius:50%; background:rgba(90,63,20,.55);"></div>
+    <div style="width:30px; height:2.25px; background:rgba(90,63,20,.18);"></div>
+    <div style="width:10.5px; height:10.5px; border-radius:50%; background:rgba(90,63,20,.55);"></div>
+    <div style="width:30px; height:2.25px; background:rgba(90,63,20,.18);"></div>
+    <div style="width:15px; height:15px; border-radius:50%; background:#B8443A; box-shadow:0 0 0 6px rgba(184,68,58,.2), 0 0 21px rgba(184,68,58,.7);"></div>
+    <div style="width:30px; height:2.25px; background:rgba(90,63,20,.18);"></div>
+    <div style="width:10.5px; height:10.5px; border-radius:50%; background:transparent; border:2.25px solid rgba(90,63,20,.28);"></div>
+  </div>
+
+  <!-- aurora -->
+  <div style="position:absolute; inset:-12%; z-index:0; pointer-events:none;">
+    <div style="position:absolute; left:8%; top:6%; width:46%; height:50%; border-radius:50%; background:radial-gradient(circle, rgba(217,169,78,.28), transparent 68%); filter:blur(108px); animation:scAur1 26s ease-in-out infinite;"></div>
+    <div style="position:absolute; right:4%; top:30%; width:50%; height:56%; border-radius:50%; background:radial-gradient(circle, rgba(184,68,58,.12), transparent 70%); filter:blur(120px); animation:scAur2 30s ease-in-out infinite;"></div>
+  </div>
+
+  <!-- faint lined paper -->
+  <div style="position:absolute; inset:0; z-index:0; pointer-events:none; opacity:.4; background-image:repeating-linear-gradient(0deg, transparent 0, transparent 55.5px, rgba(90,63,20,.06) 55.5px, rgba(90,63,20,.06) 57px);"></div>
+
+  <!-- stage indicator -->
+  <div style="position:relative; z-index:2; font-family:'JetBrains Mono',monospace; font-size:19.5px; letter-spacing:.42em; text-transform:uppercase; color:#B8443A; margin-bottom:24px; opacity:0; animation:scFade .9s ease .1s both;">Оценяване</div>
+
+  <div style="position:relative; z-index:2; text-align:center; margin-bottom:54px; opacity:0; animation:scFade 1s ease .22s both;">
+    <div style="font-family:'Caveat',cursive; font-weight:700; font-size:66px; color:#5a3f14; line-height:1;">Твоят фиш с оценки</div>
+    <div style="font-family:'EB Garamond',serif; font-style:italic; font-size:27px; color:#7a5a2e; margin-top:15px; max-width:780px;">Знаем, че никога не давате точно 6.00. Ето как се справи този път.</div>
+  </div>
+
+  <!-- report card -->
+  <div style="position:relative; z-index:2; width:100%; max-width:960px; padding:60px 66px; box-sizing:border-box; background:linear-gradient(180deg,#fffaf0,#f6ecd6); border-radius:6px; box-shadow:0 45px 120px -48px rgba(90,63,20,.4), inset 0 0 0 1.5px rgba(120,90,40,.16); opacity:0; animation:scFade 1s ease .38s both;">
+
+    <sc-for list="{{ rows }}" as="row" hint-placeholder-count="3">
+      <div style="display:flex; align-items:center; gap:33px; padding:27px 0; border-bottom:1.5px solid rgba(120,90,40,.14);">
+        <div style="flex:1; min-width:0;">
+          <div style="font-family:'EB Garamond',serif; font-size:28.5px; color:#4a3a22;">{{ row.label }}</div>
+          <div style="font-family:'Caveat',cursive; font-style:italic; font-weight:500; font-size:28.5px; color:#B8443A; margin-top:6px;">{{ row.comment }}</div>
+        </div>
+        <div style="flex-shrink:0; width:90px; height:90px; border-radius:50%; border:3.75px solid #B8443A; display:flex; align-items:center; justify-content:center; font-family:'Caveat',cursive; font-weight:700; font-size:31.5px; color:#B8443A; transform:rotate(-6deg);">{{ row.grade }}</div>
+      </div>
+    </sc-for>
+
+    <div style="display:flex; align-items:center; gap:33px; padding-top:39px; margin-top:9px;">
+      <div style="flex:1; min-width:0;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.18em; text-transform:uppercase; color:#a87a2e;">Обща оценка</div>
+        <div style="font-family:'Caveat',cursive; font-style:italic; font-weight:600; font-size:31.5px; color:#5a3f14; margin-top:9px;">{{ finalComment }}</div>
+      </div>
+      <div style="flex-shrink:0; width:114px; height:114px; border-radius:50%; border:4.5px solid #D9A94E; display:flex; align-items:center; justify-content:center; font-family:'Caveat',cursive; font-weight:700; font-size:40.5px; color:#a87a2e; transform:rotate(4deg); box-shadow:0 0 0 7.5px rgba(217,169,78,.14);">{{ finalGrade }}</div>
+    </div>
+  </div>
+
+  <a href="Final.dc.html" style="position:relative; z-index:2; margin-top:60px; padding:24px 66px; font-family:'Caveat',cursive; font-weight:600; font-size:39px; color:#5a3f14; background:transparent; border:2.25px solid rgba(90,63,20,.4); border-radius:3px; cursor:pointer; transition:all .35s ease; text-decoration:none; display:inline-block; opacity:0; animation:scFade .9s ease .6s both;" style-hover="border-color:#B8443A; color:#7a2a20; box-shadow:0 0 36px -12px rgba(184,68,58,.3);" style-active="transform:translateY(1.5px);">Последна стъпка&nbsp;&nbsp;→</a>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  read(key, fallback) {
+    try {
+      const v = localStorage.getItem(key);
+      return v ? v : fallback;
+    } catch (e) { return fallback; }
+  }
+
+  renderVals() {
+    const g1 = this.read("ilka_grade1", "5.81");
+    const g2 = this.read("ilka_grade2", "5.72");
+    const g3 = this.read("ilka_grade3", "5.90");
+    const avg = ((parseFloat(g1) + parseFloat(g2) + parseFloat(g3)) / 3).toFixed(2);
+
+    const rows = [
+      { label: "Задача 1 — тримата синове", grade: g1, comment: "Обосновката е точна. Резерв винаги остава." },
+      { label: "Задача 2 — охлювът в кладенеца", grade: g2, comment: "Последният ден е разбран правилно." },
+      { label: "Задача 3 — подвижният пъзел", grade: g3, comment: "Изведено без засядане. Почти отличен." },
+    ];
+
+    return {
+      rows,
+      finalGrade: avg,
+      finalComment: "Дори тук — " + avg + ". Точно като Вас.",
+    };
+  }
+}
+
+</script>
+</body>
+</html>

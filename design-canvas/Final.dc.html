@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&amp;family=JetBrains+Mono:wght@300;400;500&amp;display=swap" rel="stylesheet">
+  <script src="./image-slot.js"></script>
+  <style>
+    @keyframes scFadeIn { from{ opacity:0; } to{ opacity:1; } }
+    summary::-webkit-details-marker { display:none; }
+    @keyframes scFade { from{opacity:0; transform:translateY(24px); filter:blur(3px);} to{opacity:1; transform:translateY(0); filter:blur(0);} }
+  </style>
+</helmet>
+
+<div data-screen-label="Финал" style="position:relative; min-height:100vh; width:100%; overflow:hidden; display:flex; flex-direction:column; align-items:center; box-sizing:border-box; background:radial-gradient(ellipse at 50% 45%, #6a4a38 0%, #2a1a14 70%);">
+
+  <!-- page switcher -->
+  <details style="position:fixed; top:39px; left:39px; z-index:300;">
+    <summary style="cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.14em; text-transform:uppercase; color:#D9A94E; padding:13.5px 21px; border-radius:999px; background:rgba(244,241,234,.08); border:1.5px solid rgba(244,241,234,.16); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); list-style:none;">Страници</summary>
+    <div style="margin-top:12px; padding:21px 24px; border-radius:12px; background:rgba(42,26,20,.94); border:1.5px solid rgba(244,241,234,.16); backdrop-filter:blur(15px); display:flex; flex-direction:column; gap:15px; min-width:240px; box-shadow:0 30px 75px -30px rgba(0,0,0,.6);">
+      <a href="Landing.dc.html" style="font-family:'Caveat',cursive; font-size:28px; color:#fff3e6; text-decoration:none;">Начало</a>
+      <a href="Stage1.dc.html" style="font-family:'Caveat',cursive; font-size:28px; color:#fff3e6; text-decoration:none;">Задача 1</a>
+      <a href="Stage2.dc.html" style="font-family:'Caveat',cursive; font-size:28px; color:#fff3e6; text-decoration:none;">Задача 2</a>
+      <a href="Stage3.dc.html" style="font-family:'Caveat',cursive; font-size:28px; color:#fff3e6; text-decoration:none;">Задача 3</a>
+      <a href="Grades.dc.html" style="font-family:'Caveat',cursive; font-size:28px; color:#fff3e6; text-decoration:none;">Фиш с оценки</a>
+      <a href="Final.dc.html" style="font-family:'Caveat',cursive; font-size:28px; color:#D9A94E; text-decoration:none;">Финал</a>
+    </div>
+  </details>
+
+  <!-- journey progress -->
+  <div style="position:fixed; top:39px; left:50%; transform:translateX(-50%); z-index:200; display:flex; align-items:center; gap:13.5px; padding:13.5px 27px; border-radius:1498.5px; background:rgba(244,241,234,.08); border:1.5px solid rgba(244,241,234,.16); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px);">
+    <div style="width:10.5px; height:10.5px; border-radius:50%; background:rgba(244,241,234,.75);"></div>
+    <div style="width:30px; height:2.25px; background:rgba(244,241,234,.22);"></div>
+    <div style="width:10.5px; height:10.5px; border-radius:50%; background:rgba(244,241,234,.75);"></div>
+    <div style="width:30px; height:2.25px; background:rgba(244,241,234,.22);"></div>
+    <div style="width:10.5px; height:10.5px; border-radius:50%; background:rgba(244,241,234,.75);"></div>
+    <div style="width:30px; height:2.25px; background:rgba(244,241,234,.22);"></div>
+    <div style="width:10.5px; height:10.5px; border-radius:50%; background:rgba(244,241,234,.75);"></div>
+    <div style="width:30px; height:2.25px; background:rgba(244,241,234,.22);"></div>
+    <div style="width:10.5px; height:10.5px; border-radius:50%; background:rgba(244,241,234,.75);"></div>
+    <div style="width:30px; height:2.25px; background:rgba(244,241,234,.22);"></div>
+    <div style="width:15px; height:15px; border-radius:50%; background:#D9A94E; box-shadow:0 0 0 6px rgba(217,169,78,.2), 0 0 21px rgba(217,169,78,.75);"></div>
+  </div>
+
+  <div style="position:relative; z-index:2; font-family:'JetBrains Mono',monospace; font-size:19.5px; letter-spacing:.42em; text-transform:uppercase; color:#e0b98a; margin-top:117px; opacity:.85;">Финал</div>
+
+  <!-- perspective stage -->
+  <div style="position:relative; flex:1; width:100%; perspective:2100px; perspective-origin:50% 30%;">
+
+    <sc-if value="{{ showEnvelopeStage }}" hint-placeholder-val="{{ true }}">
+      <div onClick="{{ onEnvelopeClick }}" style="{{ envelopeWrapStyle }}">
+        <svg viewBox="0 0 360 230" width="540" height="345" style="display:block; overflow:visible;">
+          <defs>
+            <linearGradient id="env-grad-f" x1="0" y1="0" x2="0.4" y2="1">
+              <stop offset="0%" stop-color="#f7ecd4"></stop>
+              <stop offset="100%" stop-color="#e6d3a8"></stop>
+            </linearGradient>
+            <filter id="noise-f">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4"></feTurbulence>
+              <feColorMatrix values="0 0 0 0 0.4   0 0 0 0 0.3   0 0 0 0 0.2   0 0 0 0.06 0"></feColorMatrix>
+              <feComposite in2="SourceGraphic" operator="in"></feComposite>
+            </filter>
+          </defs>
+          <rect x="0" y="0" width="360" height="230" rx="3" fill="url(#env-grad-f)" stroke="#c2a468" stroke-width="1.5"></rect>
+          <rect x="0" y="0" width="360" height="230" rx="3" filter="url(#noise-f)" opacity="0.5"></rect>
+          <g style="{{ svgSeamsStyle }}">
+            <path d="M 0 0 L 180 100 L 360 0" fill="none" stroke="#a5895a" stroke-width="1" opacity="0.3"></path>
+            <path d="M 0 230 L 180 130 L 360 230" fill="none" stroke="#a5895a" stroke-width="1" opacity="0.3"></path>
+          </g>
+          <g style="{{ svgAddrStyle }}">
+            <line x1="118" y1="144" x2="270" y2="144" stroke="#a5895a" stroke-width="0.6" opacity="0.4"></line>
+            <line x1="118" y1="164" x2="248" y2="164" stroke="#a5895a" stroke-width="0.6" opacity="0.4"></line>
+            <text x="118" y="142" fill="#7a5a2e" font-size="21" font-family="Caveat, cursive">За г-жо Неделева</text>
+            <text x="118" y="162" fill="#7a5a2e" font-size="15" font-family="Caveat, cursive" opacity="0.75">— от Ваши ученици</text>
+            <g>
+              <rect x="290" y="14" width="50" height="60" fill="#eeddb4" stroke="#a5895a" stroke-width="0.8" stroke-dasharray="2 2"></rect>
+              <circle cx="315" cy="44" r="14" fill="#D9A94E" opacity="0.9"></circle>
+              <text x="315" y="49" text-anchor="middle" fill="#5a3f14" font-size="15" font-family="serif">∞</text>
+            </g>
+          </g>
+          <g style="{{ svgFlapStyle }}">
+            <path d="M 0 0 L 180 110 L 360 0 Z" fill="#e6d3a8" stroke="#c2a468" stroke-width="1.5"></path>
+            <path d="M 0 0 L 180 110 L 360 0" fill="none" stroke="#a5895a" stroke-width="0.6" opacity="0.4"></path>
+            <g transform="translate(180, 100)" style="{{ svgSealStyle }}">
+              <circle r="22" fill="#D9A94E"></circle>
+              <circle r="22" fill="#e8c37a" opacity="0.5"></circle>
+              <circle r="18" fill="none" stroke="#a87a2e" stroke-width="1" opacity="0.6"></circle>
+              <text text-anchor="middle" y="7" fill="#5a3f14" font-size="20" font-family="serif" font-style="italic">И</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div style="{{ hintStyle }}">натисни плика</div>
+    </sc-if>
+
+    <sc-if value="{{ showReadStage }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute; left:50%; top:calc(50% + 67.5px); transform:translate(-50%,-50%); z-index:100; display:flex; flex-direction:column; align-items:center; gap:27px; max-height:calc(92vh - 135px); padding:0 30px; box-sizing:border-box;">
+
+        <div style="{{ letterCardStyle }}">
+          <div style="{{ letterPaperStyle }}">
+            <div style="{{ creaseTopStyle }}"></div>
+            <div style="{{ creaseBottomStyle }}"></div>
+            <div style="{{ letterTextWrapStyle }}">
+              <div style="{{ greetingStyle }}">Скъпа г-жо Неделева,</div>
+              <sc-for list="{{ lines }}" as="ln" hint-placeholder-count="4">
+                <div style="{{ ln.style }}">{{ ln.text }}</div>
+              </sc-for>
+              <div style="{{ tailStyle }}">
+                <div style="display:flex; justify-content:center; margin:33px 0;">
+                  <image-slot id="final-photo" style="width:100%; max-width:600px; height:345px" shape="rounded" radius="6" placeholder="снимка на класа тук"></image-slot>
+                </div>
+                <div style="font-family:'Caveat',cursive; font-weight:600; font-size:36px; color:#5a3f14; text-align:center;">С обич и уважение,</div>
+                <div style="font-family:'Caveat',cursive; font-weight:600; font-size:36px; color:#a87a2e; text-align:center; margin-top:3px;">[ имената на учениците Ви ]</div>
+              </div>
+            </div>
+          </div>
+          <button onClick="{{ onClose }}" style="{{ closeButtonStyle }}">×</button>
+        </div>
+
+        <div style="width:360px; height:231px; filter:drop-shadow(0 15px 27px rgba(0,0,0,0.4)); perspective:1200px;">
+          <svg viewBox="0 0 360 230" width="360" height="231" style="display:block; overflow:visible;">
+            <rect x="0" y="0" width="360" height="230" rx="3" fill="url(#env-grad-f)" stroke="#c2a468" stroke-width="1.5"></rect>
+            <path d="M 0 0 L 180 100 L 360 0" fill="none" stroke="#a5895a" stroke-width="1" opacity="0.3"></path>
+            <path d="M 0 230 L 180 130 L 360 230" fill="none" stroke="#a5895a" stroke-width="1" opacity="0.3"></path>
+            <g style="transform-origin:180px 0px; transform:rotateX(165deg) translateY(-1.5px);">
+              <path d="M 0 0 L 180 110 L 360 0 Z" fill="#e6d3a8" stroke="#c2a468" stroke-width="1.5"></path>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { phase: "stack", letterPhase: 0 };
+
+  componentWillUnmount() {
+    clearTimeout(this._t1); clearTimeout(this._t2);
+    clearTimeout(this._lt1); clearTimeout(this._lt2); clearTimeout(this._lt3);
+  }
+
+  onEnvelopeClick = () => {
+    if (this.state.phase !== "stack") return;
+    this.setState({ phase: "lift" });
+    this._t1 = setTimeout(() => this.setState({ phase: "settle" }), 1700);
+    this._t2 = setTimeout(() => {
+      this.setState({ phase: "read", letterPhase: 0 });
+      this._lt1 = setTimeout(() => this.setState({ letterPhase: 1 }), 100);
+      this._lt2 = setTimeout(() => this.setState({ letterPhase: 2 }), 700);
+      this._lt3 = setTimeout(() => {
+        this.setState({ letterPhase: 3 });
+        try { localStorage.setItem("ilka_final", "opened"); } catch (e) {}
+      }, 1500);
+    }, 1700 + 1300);
+  };
+
+  onClose = () => {
+    clearTimeout(this._t1); clearTimeout(this._t2);
+    clearTimeout(this._lt1); clearTimeout(this._lt2); clearTimeout(this._lt3);
+    this.setState({ phase: "stack", letterPhase: 0 });
+  };
+
+  renderVals() {
+    const { phase, letterPhase } = this.state;
+    const clickable = phase === "stack";
+    const svgIsOpen = phase === "settle";
+
+    let transform, transition;
+    if (phase === "stack") {
+      transform = "translate(0px, 0px) rotate(0deg) scale(1)";
+      transition = "transform 0.6s cubic-bezier(.4,1.4,.5,1)";
+    } else if (phase === "lift") {
+      transform = "translate(0px, -60px) rotate(0deg) scale(1.08)";
+      transition = "transform 1700ms cubic-bezier(.22,.85,.32,1.12)";
+    } else {
+      transform = "translate(0px, 163.5px) rotate(0deg) scale(0.667)";
+      transition = "transform 1300ms cubic-bezier(.4,0,.2,1)";
+    }
+
+    const envelopeWrapStyle = {
+      position: "absolute", left: "50%", top: "50%", width: "540px", height: "345px",
+      marginLeft: "-270px", marginTop: "-172.5px", transform, transition,
+      cursor: clickable ? "pointer" : "default",
+      filter: clickable ? "drop-shadow(0 9px 18px rgba(0,0,0,0.25))" : "drop-shadow(0 36px 54px rgba(0,0,0,0.4))",
+    };
+    const svgSeamsStyle = { opacity: svgIsOpen ? 1 : 0, transition: "opacity .3s ease" };
+    const svgAddrStyle = { opacity: svgIsOpen ? 0 : 1, transition: "opacity .3s ease" };
+    const svgFlapStyle = {
+      transformOrigin: "180px 0px",
+      transform: svgIsOpen ? "rotateX(165deg) translateY(-1.5px)" : "rotateX(0deg)",
+      transition: "transform 1.0s cubic-bezier(.5,1.1,.4,1)",
+    };
+    const svgSealStyle = { opacity: svgIsOpen ? 0 : 1, transition: "opacity .3s ease" };
+    const hintStyle = {
+      position: "absolute", left: "50%", bottom: "66px", transform: "translateX(-50%)",
+      color: "#fff3e6", fontFamily: "Caveat, cursive", fontSize: "33px", opacity: phase === "stack" ? 0.7 : 0,
+      transition: "opacity .3s ease", pointerEvents: "none",
+    };
+
+    const paragraphs = [
+      "Щом сте стигнали дотук — значи сте решили всичко. Точно както винаги сте ни учили: не с бързане, а с търпение, докато парчетата не си дойдат на мястото.",
+      "",
+      "Малцина от нас помнят наизуст формулите. Но помним звука на тебешира, гласа, който обясняваше отново и отново, без да се уморява, и увереността Ви, че всеки от нас може да го разбере — стига да не бърза.",
+      "",
+      "Тази малка игра е скромен опит да Ви върнем нещо от годините задачи — с обичта, с която ги давахте.",
+      "",
+      "Благодарим Ви. За търпението. За строгостта, която ни направи по-добри. И за всичко, което не се побира на тази страница.",
+    ];
+    const lines = paragraphs.map((text, i) => ({
+      text: text || " ",
+      style: {
+        minHeight: text === "" ? "27px" : "auto",
+        opacity: letterPhase >= 3 ? 1 : 0,
+        transform: letterPhase >= 3 ? "translateY(0)" : "translateY(9px)",
+        transition: "opacity .5s " + (0.1 + i * 0.12) + "s, transform .5s " + (0.1 + i * 0.12) + "s",
+      },
+    }));
+    const tailDelay = 0.1 + paragraphs.length * 0.12 + 0.15;
+    const tailStyle = {
+      opacity: letterPhase >= 3 ? 1 : 0,
+      transform: letterPhase >= 3 ? "translateY(0)" : "translateY(9px)",
+      transition: "opacity .5s " + tailDelay + "s, transform .5s " + tailDelay + "s",
+    };
+    const greetingStyle = {
+      fontFamily: "Caveat, cursive", fontWeight: 700, fontSize: "45px", color: "#5a3f14", marginBottom: "27px",
+    };
+
+    const letterCardStyle = { position: "relative", width: "min(930px, 90vw)" };
+    const letterPaperStyle = {
+      position: "relative",
+      width: "100%",
+      height: letterPhase >= 2 ? "min(930px, calc(80vh - 135px))" : "300px",
+      opacity: letterPhase >= 1 ? 1 : 0,
+      transform: letterPhase >= 1 ? "scale(1)" : "scale(0.7)",
+      transitionProperty: "height, opacity, transform",
+      transitionDuration: "0.85s, 0.5s, 0.6s",
+      transitionTimingFunction: "cubic-bezier(.5,1.1,.4,1)",
+      boxShadow: "0 45px 90px rgba(0,0,0,0.45)",
+      borderRadius: "6px",
+      background: "repeating-linear-gradient(0deg, transparent 0, transparent 49.5px, rgba(120,90,60,0.16) 49.5px, rgba(120,90,60,0.16) 51px), linear-gradient(180deg, #fdf6e9 0%, #f6e9d2 100%)",
+      boxSizing: "border-box",
+      overflow: "hidden",
+    };
+    const creaseTopStyle = {
+      position: "absolute", left: 0, right: 0, top: "33.33%", height: "1.5px",
+      background: "linear-gradient(90deg, transparent, rgba(120,90,60,0.4), transparent)",
+      opacity: letterPhase >= 2 ? 0.85 : 0, transition: "opacity .4s .2s",
+    };
+    const creaseBottomStyle = {
+      position: "absolute", left: 0, right: 0, top: "66.66%", height: "1.5px",
+      background: "linear-gradient(90deg, transparent, rgba(120,90,60,0.4), transparent)",
+      opacity: letterPhase >= 2 ? 0.85 : 0, transition: "opacity .4s .2s",
+    };
+    const letterTextWrapStyle = {
+      position: "absolute", inset: "75px 84px",
+      fontFamily: "'EB Garamond', serif", fontSize: "33px", lineHeight: "51px",
+      color: "#3a2820", overflowY: "auto",
+    };
+    const closeButtonStyle = {
+      position: "absolute", top: "-24px", right: "-24px",
+      width: "54px", height: "54px", borderRadius: "27px", border: "none",
+      background: "#2a1a14", color: "#fff3e6", fontSize: "30px", lineHeight: 1,
+      cursor: "pointer", boxShadow: "0 6px 18px rgba(0,0,0,0.4)",
+      display: letterPhase >= 2 ? "grid" : "none", placeItems: "center",
+      opacity: letterPhase >= 2 ? 1 : 0, animation: letterPhase >= 2 ? "scFadeIn .4s .2s forwards" : "none",
+    };
+
+    return {
+      showEnvelopeStage: phase !== "read",
+      showReadStage: phase === "read",
+      onEnvelopeClick: this.onEnvelopeClick,
+      onClose: this.onClose,
+      envelopeWrapStyle, svgSeamsStyle, svgAddrStyle, svgFlapStyle, svgSealStyle, hintStyle,
+      lines, greetingStyle, tailStyle,
+      letterCardStyle, letterPaperStyle, creaseTopStyle, creaseBottomStyle, letterTextWrapStyle, closeButtonStyle,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

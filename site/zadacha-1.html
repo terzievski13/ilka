@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#023859">
+<title>Задача първа — Тримата синове</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%88%9E%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main class="screen s1">
+  <div class="progress" data-progress="1"></div>
+  <div class="aurora"><i></i><i></i><i></i></div>
+  <div class="grain"></div>
+  <div class="symbols" data-symbols></div>
+
+  <p class="eyebrow fade-1" style="position:relative;z-index:2;margin-bottom:clamp(20px,4vw,45px)">Задача&nbsp;първа</p>
+
+  <section class="card fade-2">
+    <h1 class="h2">Преди да продължиш…</h1>
+
+    <div class="prose">
+      <p>Двама стари приятели — и двамата математици — се срещат след дълга раздяла. Разговарят се и единият споменава, че има трима синове.</p>
+      <p class="said">— На колко са? — пита другият.</p>
+      <p class="said">— Произведението на годините им е <span class="num">36</span>, а сборът им е равен на броя прозорци на сградата зад гърба ти.</p>
+      <p>Вторият се замисля, оглежда сградата и казва:</p>
+      <p class="said">— Това не ми е достатъчно.</p>
+      <p class="said">— Вярно — усмихва се първият. — Забравих да добавя: най-големият ми син е червенокос.</p>
+    </div>
+
+    <p class="q">На колко години са тримата сина?</p>
+
+    <div id="ask">
+      <form class="answer" id="form" novalidate>
+        <div class="row">
+          <label class="visually-hidden" for="answer" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Отговор</label>
+          <input class="field" id="answer" type="text" inputmode="text" autocomplete="off"
+                 autocapitalize="off" spellcheck="false" placeholder="напр. 4, 5, 6">
+          <button class="btn sm" type="submit">Провери</button>
+        </div>
+        <div class="feedback" id="feedback" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#e0918f" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6 18 18"/><path d="M18 6 6 18"/></svg>
+          <span>Не съвсем. Помисли пак — отговорът е по-близо, отколкото изглежда.</span>
+        </div>
+      </form>
+    </div>
+
+    <div class="done-panel" id="done" hidden>
+      <svg class="tick" viewBox="0 0 52 52" fill="none" stroke="#A7EBF2" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 27 22 37 41 15" stroke-dasharray="60" stroke-dashoffset="60" style="animation:draw .7s cubic-bezier(.2,.7,.2,1) .1s forwards"/>
+      </svg>
+      <p class="big">Точно така.</p>
+      <p class="sub">Знаех си, че ще ги откриеш. Следващата задача те очаква съвсем скоро.</p>
+      <a class="btn sm" href="zadacha-2.html">Продължи&nbsp;&nbsp;→</a>
+      <button class="linkbtn" id="again" type="button">реши отново</button>
+    </div>
+
+    <div class="hintbox">
+      <button class="linkbtn" id="hintBtn" type="button" aria-expanded="false" aria-controls="hint">трябва ли ти подсказка?</button>
+      <p id="hint" hidden>Запиши всички тройки естествени числа с произведение 36. Защо подсказката за прозорците не е достатъчна на втория математик — и какво променя думата „най-големият“?</p>
+    </div>
+  </section>
+</main>
+
+<script src="assets/app.js"></script>
+<script>
+window.ILKA_QUIZ = {
+  key: "ilka_stage1",
+  gradeKey: "ilka_grade1",
+  grade: "5.81",
+  check: function (n) {
+    var s = n.slice().sort(function (a, b) { return a - b; });
+    return s.length === 3 && s[0] === 2 && s[1] === 2 && s[2] === 9;
+  }
+};
+</script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>
