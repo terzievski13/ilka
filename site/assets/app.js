@@ -40,7 +40,7 @@
       var size = isText ? 30 + (i % 4) * 3 : 45 + (i % 6) * 12;
       s.style.cssText =
         "left:" + SPOTS[i][0] + "%;top:" + SPOTS[i][1] + "%;" +
-        "font-size:" + size + "px;opacity:." + (4 + (i % 4)) + ";" +
+        "font-size:" + size + "px;opacity:0.0" + (4 + (i % 4)) + ";" +
         "animation:drift " + (12 + (i % 10)) + "s ease-in-out -" + (i % 9) + "s infinite";
       frag.appendChild(s);
     }
