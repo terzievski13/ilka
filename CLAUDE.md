@@ -83,6 +83,22 @@ orientation change, so the board always fits. Pieces are positioned with
 `layoutBoard()`. Dragging uses pointer events with an axis lock and
 `touch-action:none`, which is what makes it work under a finger.
 
+## The progress pill is fixed, so it must occlude
+
+On phones most pages are taller than the viewport, and the content scrolls
+underneath the fixed pill. It started at 6% alpha, so text showed straight
+through it and read as a rendering glitch. It now sits at ~0.9 alpha with a
+backdrop blur, in all three themes (dark, `.s3` light blue, `.paper`). If you
+restyle it, keep the background opaque — `scroll.mjs` asserts alpha >= 0.85.
+
+## Assets must not be cached hard
+
+`vercel.json` sets `max-age=0, must-revalidate` on `/assets/*`. An earlier
+`max-age=3600` meant a browser that had loaded the site kept serving an
+hour-old `app.js` against fresh HTML — the two drifted out of sync and the
+page looked broken. ETags make revalidation cheap; don't raise this without
+adding hashed filenames.
+
 ## The secret skip
 
 `zadacha-3.html` has a faint **π** in the bottom-left corner (`#skip`) that
