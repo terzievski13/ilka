@@ -2,7 +2,7 @@
 (function () {
   "use strict";
   var store = window.ilka.store;
-  var COLS = 4, ROWS = 5, GAP = 5;
+  var COLS = 4, ROWS = 5, GAP = 5, MIN_CELL = 62;
 
   var INITIAL = [
     { id: "cao", x: 1, y: 0, w: 2, h: 2, target: true },
@@ -23,22 +23,52 @@
   var movesEl = document.getElementById("moves");
   var finalMovesEl = document.getElementById("finalMoves");
   var arrow = document.getElementById("arrow");
+  var wonSub = document.getElementById("wonSub");
+  var skip = document.getElementById("skip");
 
   var cell = 100, pieces = [], moves = 0, won = false, leaving = false;
   var els = {}, drag = null;
 
   /* ---- sizing ---- */
   function computeCell() {
-    var gut = 2 * (window.innerWidth < 640 ? 16 : 36);
-    // space the rest of the page needs (title, controls, progress bar)
-    var chrome = window.innerWidth < 640 ? 300 : 400;
-    var byW = (Math.min(window.innerWidth - gut, 560)) / COLS;
-    var byH = (window.innerHeight - chrome) / ROWS;
-    return Math.max(46, Math.min(144, Math.floor(Math.min(byW, byH))));
+    var vw = window.innerWidth;
+    // visualViewport excludes the mobile browser's own bars; innerHeight does not,
+    // which is what pushed the moves/reset controls behind Safari's bottom bar
+    var vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    var narrow = vw < 640;
+    var gut = narrow ? 48 : 72;       // side breathing room
+    var chrome = narrow ? 340 : 430;  // progress pill, title, arrow, controls
+    var byW = Math.min(vw - gut, 520) / COLS;
+    var byH = (vh - chrome) / ROWS;
+    return Math.max(MIN_CELL, Math.min(132, Math.floor(Math.min(byW, byH))));
   }
 
   function layoutBoard() {
     cell = computeCell();
+    applyCell();
+    fitToViewport();
+  }
+
+  // The reserve above is only an estimate — the real title/controls heights vary
+  // with wrapping and font loading. So lay it out, measure, and shrink until the
+  // controls genuinely sit on screen.
+  function fitToViewport() {
+    var controls = document.querySelector(".controls");
+    if (!controls) return;
+    for (var i = 0; i < 10; i++) {
+      var vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+      var over = controls.getBoundingClientRect().bottom - vh + 10;
+      if (over <= 0) break;
+      var next = cell - Math.max(1, Math.ceil(over / ROWS));
+      // below this the puzzle stops being playable; let the page scroll instead
+      if (next < MIN_CELL) { next = MIN_CELL; }
+      if (next === cell) break;
+      cell = next;
+      applyCell();
+    }
+  }
+
+  function applyCell() {
     board.style.width = COLS * cell + "px";
     board.style.height = ROWS * cell + "px";
     board.style.backgroundImage =
@@ -180,13 +210,24 @@
   function checkWin() {
     var t = pieces.find(function (p) { return p.target; });
     if (!t || t.x !== 1 || t.y !== ROWS - 2) return;
+    finishWin(false);
+  }
+
+  // shared by a real solve and by the secret skip
+  function finishWin(skipped) {
+    if (won || leaving) return;
     leaving = true;
     render();
     setTimeout(function () {
       store.set("ilka_stage3", "solved");
       store.set("ilka_grade3", "5.90");
       won = true; leaving = false;
-      finalMovesEl.textContent = String(moves);
+      if (skipped) {
+        // "изведе го за 0 хода" would read like a bug
+        wonSub.textContent = "Знаех си, че ще намериш пътя — както винаги.";
+      } else {
+        finalMovesEl.textContent = String(moves);
+      }
       play.hidden = true;
       wonEl.hidden = false;
     }, 700);
@@ -194,6 +235,9 @@
 
   function reset() {
     drag = null; moves = 0; won = false; leaving = false;
+    wonSub.innerHTML = 'Изведе го за <span id="finalMoves">0</span> хода. ' +
+      'Знаех си, че ще намериш пътя — както винаги.';
+    finalMovesEl = document.getElementById("finalMoves");
     play.hidden = false; wonEl.hidden = true;
     build(); layoutBoard();
   }
@@ -201,6 +245,7 @@
   window.addEventListener("pointermove", onMove, { passive: false });
   window.addEventListener("pointerup", onUp);
   window.addEventListener("pointercancel", onUp);
+  if (skip) skip.addEventListener("click", function () { finishWin(true); });
   document.getElementById("reset").addEventListener("click", reset);
   document.getElementById("retry").addEventListener("click", reset);
 
@@ -210,7 +255,18 @@
     rt = setTimeout(layoutBoard, 120);
   });
   window.addEventListener("orientationchange", function () { setTimeout(layoutBoard, 250); });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(layoutBoard, 120);
+    });
+  }
 
   build();
   layoutBoard();
+  // the handwritten title changes height once the webfont lands, which moves
+  // the controls — re-fit when it does
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(layoutBoard).catch(function () {});
+  }
 })();

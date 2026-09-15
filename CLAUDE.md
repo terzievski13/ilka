@@ -44,10 +44,16 @@ Safari because of the collapsing address bar.
 
 **Tap targets are at least 44px tall** (`.linkbtn` has `min-height:44px`).
 
-**Shared chrome is injected by `app.js`, not written into each page.** The page
-switcher (`nav()`), the progress dots (`progress()`) and the floating symbols
-(`symbols()`) are all built in JS and inserted into `main.screen`. Add shared
-UI there rather than pasting markup into six files.
+**Shared chrome is injected by `app.js`, not written into each page.** The
+progress dots (`progress()`) and the floating symbols (`symbols()`) are built in
+JS and inserted into `main.screen`. Add shared UI there rather than pasting
+markup into six files.
+
+**The progress dots are the navigation.** Each dot is an `<a>` into `STEPS` in
+`app.js`; that array is the single source of truth for page order and titles.
+The dots are small, so each link carries an invisible 44px-tall hit area via
+`.step::after` — if you change the spacing, re-check that those hit areas don't
+overlap, or taps land on the wrong page.
 
 **All localStorage goes through `window.ilka.store`** (`get`/`set`/`del`). It
 swallows exceptions, because Safari private mode throws on access and an
@@ -77,12 +83,26 @@ orientation change, so the board always fits. Pieces are positioned with
 `layoutBoard()`. Dragging uses pointer events with an axis lock and
 `touch-action:none`, which is what makes it work under a finger.
 
-## The top row is crowded on small phones
+## The secret skip
 
-The page switcher (fixed top-left) and the progress dots (fixed top-centre)
-nearly collide at 375px — they overlapped by 6px until a `max-width:400px`
-media query tightened the padding and letter-spacing on both. If you make
-either one wider, re-check iPhone SE (375px) first.
+`zadacha-3.html` has a faint **π** in the bottom-left corner (`#skip`) that
+solves the puzzle instantly. This is deliberate and load-bearing: the Klotski
+needs 116 moves minimum, and without an escape hatch someone who gets stuck
+never reaches the letter, which is the whole point of the site.
+
+It carries two hard constraints. It must **never overlap the board** — at the
+original `left:7%/top:80%` it sat on the board's left edge on phones and would
+have swallowed drags. And it must **not be animated**: it was drifting, which
+made it an unreliable tap target. Both are covered by tests.
+
+## The board sizes itself by measurement, not arithmetic
+
+`computeCell()` estimates, then `fitToViewport()` measures where `.controls`
+actually lands and shrinks the cell until they're on screen — fixed reserves
+were wrong on half the devices once fonts and wrapping varied. It re-fits on
+resize, orientation change, `visualViewport` resize (mobile browser bars) and
+`document.fonts.ready`. It will not shrink below `MIN_CELL` (62px); past that
+a little page scroll is better than an unplayable board.
 
 ## Still to personalise
 
