@@ -230,7 +230,9 @@ body.paper{background:#f7efdf}
 .pageswitch summary::marker{display:none;content:""}
 .pageswitch summary:hover{border-color:var(--accent)}
 .pageswitch summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.pageswitch summary{width:-moz-fit-content;width:fit-content}
 .pageswitch .menu{
+  position:absolute;top:100%;left:0;
   margin-top:10px;padding:clamp(12px,2.2vw,21px) clamp(14px,2.6vw,24px);
   border-radius:12px;background:rgba(2,20,35,.95);
   border:1.5px solid var(--line);
