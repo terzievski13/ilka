@@ -44,6 +44,11 @@ Safari because of the collapsing address bar.
 
 **Tap targets are at least 44px tall** (`.linkbtn` has `min-height:44px`).
 
+**Shared chrome is injected by `app.js`, not written into each page.** The page
+switcher (`nav()`), the progress dots (`progress()`) and the floating symbols
+(`symbols()`) are all built in JS and inserted into `main.screen`. Add shared
+UI there rather than pasting markup into six files.
+
 **All localStorage goes through `window.ilka.store`** (`get`/`set`/`del`). It
 swallows exceptions, because Safari private mode throws on access and an
 unhandled throw would break the page.
@@ -71,6 +76,13 @@ orientation change, so the board always fits. Pieces are positioned with
 `transform: translate()` in pixels, so anything that changes `cell` must call
 `layoutBoard()`. Dragging uses pointer events with an axis lock and
 `touch-action:none`, which is what makes it work under a finger.
+
+## The top row is crowded on small phones
+
+The page switcher (fixed top-left) and the progress dots (fixed top-centre)
+nearly collide at 375px — they overlapped by 6px until a `max-width:400px`
+media query tightened the padding and letter-spacing on both. If you make
+either one wider, re-check iPhone SE (375px) first.
 
 ## Still to personalise
 

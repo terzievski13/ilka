@@ -214,3 +214,49 @@ body.paper{background:#f7efdf}
 .fade-3{opacity:0;animation:fade 1s  ease .50s both}
 .fade-4{opacity:0;animation:fade .9s ease .80s both}
 .rule.fade-3{animation:fade .6s ease .7s both,underline .8s cubic-bezier(.2,.7,.2,1) .7s both}
+
+/* ===== page switcher ===== */
+.pageswitch{position:fixed;top:clamp(14px,3vw,39px);left:clamp(12px,3vw,39px);z-index:300}
+.pageswitch summary{
+  cursor:pointer;list-style:none;font-family:var(--mono);
+  font-size:clamp(10px,2.2vw,18px);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);padding:clamp(8px,1.6vw,13.5px) clamp(12px,2.4vw,21px);
+  border-radius:999px;background:rgba(244,241,234,.06);
+  border:1.5px solid var(--line);
+  backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);
+  white-space:nowrap;-webkit-tap-highlight-color:transparent;
+  transition:border-color .3s,color .3s}
+.pageswitch summary::-webkit-details-marker,
+.pageswitch summary::marker{display:none;content:""}
+.pageswitch summary:hover{border-color:var(--accent)}
+.pageswitch summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.pageswitch .menu{
+  margin-top:10px;padding:clamp(12px,2.2vw,21px) clamp(14px,2.6vw,24px);
+  border-radius:12px;background:rgba(2,20,35,.95);
+  border:1.5px solid var(--line);
+  backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);
+  display:flex;flex-direction:column;gap:clamp(8px,1.6vw,15px);
+  min-width:min(240px,62vw);box-shadow:0 30px 75px -30px rgba(0,0,0,.6);
+  animation:fade .25s ease both}
+.pageswitch .menu a{
+  font-family:var(--hand);font-size:clamp(20px,3.6vw,28px);
+  color:#eaf6fb;text-decoration:none;line-height:1.2;
+  padding:4px 2px;border-radius:4px;transition:color .25s}
+.pageswitch .menu a:hover{color:#A7EBF2}
+.pageswitch .menu a.on{color:#A7EBF2}
+.pageswitch .menu a:focus-visible{outline:2px solid #A7EBF2;outline-offset:2px}
+
+/* light-background pages need dark chrome */
+.s3 .pageswitch summary{color:#26658C;background:rgba(2,56,89,.06);border-color:rgba(2,56,89,.18)}
+.s3 .pageswitch summary:hover{border-color:#26658C}
+.paper .pageswitch summary{color:#B8443A;background:rgba(90,63,20,.05);border-color:rgba(90,63,20,.16)}
+.paper .pageswitch summary:hover{border-color:#B8443A}
+.paper .pageswitch .menu{background:rgba(40,28,10,.95)}
+
+/* very narrow phones: the switcher and the progress pill compete for the top row */
+@media (max-width:400px){
+  .pageswitch{left:10px}
+  .pageswitch summary{letter-spacing:.03em;padding:8px 10px;font-size:10px}
+  .progress{gap:5px;padding:8px 11px}
+  .progress .bar{width:10px}
+}

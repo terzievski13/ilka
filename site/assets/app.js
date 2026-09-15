@@ -48,6 +48,42 @@
     host.setAttribute("aria-hidden", "true");
   }
 
+  /* ---- page switcher ---- */
+  var NAV = [
+    ["index.html", "Начало"],
+    ["zadacha-1.html", "Задача 1"],
+    ["zadacha-2.html", "Задача 2"],
+    ["zadacha-3.html", "Задача 3"],
+    ["ocenki.html", "Фиш с оценки"],
+    ["final.html", "Финал"]
+  ];
+  function nav() {
+    var main = document.querySelector("main.screen");
+    if (!main) return;
+    // which page are we on? works for both /x.html and the cleanUrls /x form
+    var path = location.pathname.replace(/\/$/, "").split("/").pop() || "index.html";
+    var here = path.indexOf(".") === -1 ? path + ".html" : path;
+
+    var d = document.createElement("details");
+    d.className = "pageswitch";
+    var html = '<summary>Страници</summary><div class="menu">';
+    for (var i = 0; i < NAV.length; i++) {
+      var on = NAV[i][0] === here;
+      html += '<a href="' + NAV[i][0] + '"' + (on ? ' class="on" aria-current="page"' : "") +
+              ">" + NAV[i][1] + "</a>";
+    }
+    d.innerHTML = html + "</div>";
+    main.insertBefore(d, main.firstChild);
+
+    // close when tapping anywhere else
+    document.addEventListener("click", function (e) {
+      if (d.open && !d.contains(e.target)) d.open = false;
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && d.open) { d.open = false; d.querySelector("summary").focus(); }
+    });
+  }
+
   /* ---- tiny localStorage wrapper (private mode safe) ---- */
   var store = {
     get: function (k, d) { try { return localStorage.getItem(k) || d; } catch (e) { return d; } },
@@ -56,7 +92,7 @@
   };
   window.ilka = { store: store };
 
-  function init() { progress(); symbols(); }
+  function init() { nav(); progress(); symbols(); }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else { init(); }
